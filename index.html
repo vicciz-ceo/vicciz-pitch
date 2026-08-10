@@ -1,0 +1,1284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+
+    <title>
+      vicciz — the AI agent that re-coordinates the whole trip when travel
+      breaks
+    </title>
+    <meta
+      name="description"
+      content="vicciz builds Kiipling: an AI agent that detects travel disruption, works out every downstream booking about to break, drafts a fix for each provider, and executes it the moment the traveller approves. Cross-vendor, no integration required, sold to OTAs and travel agencies."
+    />
+    <link rel="canonical" href="https://pitch.vicciz.com/" />
+    <meta
+      name="robots"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
+
+    <!-- Language alternates. English is the default; Hebrew lives at /he/. -->
+    <link rel="alternate" hreflang="en" href="https://pitch.vicciz.com/" />
+    <link rel="alternate" hreflang="he" href="https://pitch.vicciz.com/he/" />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://pitch.vicciz.com/"
+    />
+
+    <meta name="author" content="vicciz" />
+    <link rel="icon" type="image/svg+xml" href="/vicciz-mark.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="vicciz" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:locale:alternate" content="he_IL" />
+    <meta
+      property="og:title"
+      content="vicciz — the AI agent that re-coordinates the whole trip when travel breaks"
+    />
+    <meta
+      property="og:description"
+      content="One delay breaks the hotel, the transfer and the dinner. Kiipling fixes all of them — cross-vendor, no integration, nothing sent without traveller approval."
+    />
+    <meta property="og:url" content="https://pitch.vicciz.com/" />
+    <meta property="og:image" content="https://demo.vicciz.com/poster.jpg" />
+    <meta
+      property="og:image:alt"
+      content="Kiipling rebuilding a disrupted travel day"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="vicciz — the disruption layer for trips assembled from many vendors"
+    />
+    <meta
+      name="twitter:description"
+      content="Kiipling detects the disruption, drafts a fix for every broken booking, and executes each one on approval."
+    />
+    <meta name="twitter:image" content="https://demo.vicciz.com/poster.jpg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Lora:wght@500;600;700&display=swap"
+    />
+
+    <style>
+      /* ── vicciz marketing design language ──────────────────────────────
+         Tokens mirror the vicciz app's "Twilight Voyage" dark theme
+         (Kiipling/index.css). Shared verbatim with demo.vicciz.com — see
+         DESIGN.md. Marketing surfaces are single-theme by design. */
+      :root {
+        --navy: rgb(22 51 90);
+        --gold: rgb(224 137 44);
+        --red: rgb(239 68 68);
+        --green: rgb(52 211 153);
+        --bg: rgb(11 18 32);
+        --surface: rgb(19 32 58);
+        --text: rgb(255 255 255);
+        --text-secondary: rgb(255 255 255 / 0.72);
+        --text-muted: rgb(255 255 255 / 0.5);
+        --hairline: rgb(255 255 255 / 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-height: 100vh;
+        background: var(--bg);
+        /* Warm off-centre glow echoing the logo's radial warmth. Identical
+           on demo.vicciz.com — the strongest single cross-page brand cue. */
+        background-image:
+          radial-gradient(
+            60rem 40rem at 78% 12%,
+            rgb(224 137 44 / 0.13),
+            transparent 62%
+          ),
+          radial-gradient(
+            52rem 42rem at 12% 88%,
+            rgb(22 51 90 / 0.55),
+            transparent 65%
+          );
+        color: var(--text);
+        font-family:
+          Lato,
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        font-weight: 400;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .page {
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: clamp(1.75rem, 4vw, 3.5rem) clamp(1.25rem, 4vw, 2.5rem)
+          clamp(3rem, 6vw, 5rem);
+      }
+
+      /* ── Masthead ─────────────────────────────────────────────────────── */
+
+      .masthead {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        flex-wrap: wrap;
+        margin-bottom: clamp(2.5rem, 6vw, 4rem);
+      }
+
+      .masthead img {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 0.6rem;
+      }
+
+      .masthead .wordmark {
+        font-family: Lora, Georgia, serif;
+        font-weight: 600;
+        font-size: 1.2rem;
+        letter-spacing: 0.01em;
+      }
+
+      .tag {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--gold);
+        border: 1px solid rgb(224 137 44 / 0.4);
+        border-radius: 999px;
+        padding: 0.3rem 0.75rem;
+        white-space: nowrap;
+      }
+
+      /* Logical properties throughout: the Hebrew page at /he/ reuses this
+         stylesheet verbatim under dir="rtl". */
+      .masthead .spacer {
+        margin-inline-start: auto;
+      }
+
+      /* Language switcher — two states, current one is inert. */
+      .lang {
+        display: flex;
+        align-items: center;
+        gap: 0.15rem;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 0.15rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .lang a,
+      .lang span {
+        padding: 0.28rem 0.7rem;
+        border-radius: 999px;
+        text-decoration: none;
+        color: var(--text-muted);
+        line-height: 1;
+      }
+
+      .lang [aria-current="true"] {
+        background: rgb(224 137 44 / 0.14);
+        color: var(--gold);
+      }
+
+      .lang a:hover {
+        color: var(--text);
+      }
+
+      /* ── Type scale ───────────────────────────────────────────────────── */
+
+      h1 {
+        font-family: Lora, Georgia, serif;
+        font-weight: 600;
+        font-size: clamp(2rem, 5.2vw, 3.1rem);
+        line-height: 1.14;
+        letter-spacing: -0.015em;
+        margin: 0 0 1.1rem;
+        text-wrap: balance;
+        max-width: 20ch;
+      }
+
+      h1 em {
+        font-style: normal;
+        color: var(--gold);
+      }
+
+      h2 {
+        font-family: Lora, Georgia, serif;
+        font-weight: 600;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        margin: 0 0 0.6rem;
+        text-wrap: balance;
+      }
+
+      h3 {
+        font-family: Lato, sans-serif;
+        font-weight: 700;
+        font-size: 1.05rem;
+        margin: 0 0 0.4rem;
+      }
+
+      p {
+        margin: 0 0 1rem;
+        max-width: 46rem;
+      }
+
+      .eyebrow {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin: 0 0 0.9rem;
+      }
+
+      .lede {
+        font-size: clamp(1.02rem, 1.6vw, 1.14rem);
+        color: var(--text-secondary);
+        max-width: 38rem;
+        text-wrap: pretty;
+      }
+
+      section {
+        margin-top: clamp(3rem, 7vw, 5rem);
+        scroll-margin-top: 2rem;
+      }
+
+      section > p {
+        color: var(--text-secondary);
+      }
+
+      a {
+        color: var(--gold);
+        text-underline-offset: 0.2em;
+      }
+
+      :focus-visible {
+        outline: 3px solid rgb(224 137 44 / 0.5);
+        outline-offset: 2px;
+      }
+
+      /* ── Panels ───────────────────────────────────────────────────────── */
+
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 1rem;
+        padding: clamp(1.25rem, 2.5vw, 1.75rem);
+      }
+
+      .grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+        margin-top: 1.75rem;
+      }
+
+      .grid p:last-child,
+      .panel p:last-child {
+        margin-bottom: 0;
+      }
+
+      .panel p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+
+      /* ── Answer-first summary block ───────────────────────────────────── */
+
+      .summary {
+        border-inline-start: 3px solid var(--gold);
+        background: rgb(224 137 44 / 0.05);
+        border-start-end-radius: 1rem;
+        border-end-end-radius: 1rem;
+        padding: clamp(1.1rem, 2.5vw, 1.6rem) clamp(1.2rem, 3vw, 1.9rem);
+        margin-top: 2.5rem;
+      }
+
+      .summary p {
+        color: var(--text-secondary);
+        max-width: 54rem;
+      }
+
+      .summary p:first-of-type {
+        color: var(--text);
+      }
+
+      /* ── Stat tiles ───────────────────────────────────────────────────── */
+
+      .stats {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+        margin-top: 1.75rem;
+        padding: 0;
+        list-style: none;
+      }
+
+      .stats .figure {
+        display: block;
+        font-family: Lora, Georgia, serif;
+        font-weight: 600;
+        font-size: clamp(1.75rem, 4vw, 2.4rem);
+        line-height: 1.1;
+        color: var(--gold);
+      }
+
+      .stats .label {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: 0.35rem;
+      }
+
+      /* ── Numbered steps ───────────────────────────────────────────────── */
+
+      .steps {
+        list-style: none;
+        margin: 1.75rem 0 0;
+        padding: 0;
+        display: grid;
+        gap: 1rem;
+      }
+
+      .steps li {
+        display: grid;
+        grid-template-columns: 1.6rem 1fr;
+        gap: 0.9rem;
+        align-items: start;
+      }
+
+      .steps .idx {
+        width: 1.6rem;
+        height: 1.6rem;
+        border-radius: 999px;
+        background: rgb(224 137 44 / 0.12);
+        color: var(--gold);
+        font-size: 0.8rem;
+        font-weight: 700;
+        display: grid;
+        place-items: center;
+        margin-top: 0.15rem;
+      }
+
+      .steps p {
+        color: var(--text-secondary);
+        margin: 0.15rem 0 0;
+        font-size: 0.95rem;
+      }
+
+      /* ── Comparison table ─────────────────────────────────────────────── */
+
+      .table-scroll {
+        overflow-x: auto;
+        margin-top: 1.75rem;
+        border: 1px solid var(--hairline);
+        border-radius: 1rem;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 34rem;
+        font-size: 0.92rem;
+      }
+
+      caption {
+        text-align: start;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        padding: 0.9rem 1.1rem 0;
+      }
+
+      th,
+      td {
+        text-align: start;
+        padding: 0.8rem 1.1rem;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+      }
+
+      thead th {
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        font-weight: 700;
+      }
+
+      tbody th {
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      td {
+        color: var(--text-secondary);
+      }
+
+      tbody tr:last-child th,
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .yes {
+        color: var(--green);
+        font-weight: 700;
+      }
+
+      .no {
+        color: var(--red);
+        font-weight: 700;
+      }
+
+      /* ── FAQ ──────────────────────────────────────────────────────────── */
+
+      .faq {
+        display: grid;
+        gap: 0.75rem;
+        margin-top: 1.75rem;
+      }
+
+      .faq details {
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 1rem;
+        padding: 1rem clamp(1.1rem, 2.5vw, 1.5rem);
+      }
+
+      .faq summary {
+        cursor: pointer;
+        font-weight: 700;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .faq summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq summary::after {
+        content: "+";
+        color: var(--gold);
+        font-size: 1.3rem;
+        line-height: 1;
+        flex: none;
+      }
+
+      .faq details[open] summary::after {
+        content: "−";
+      }
+
+      .faq details p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin: 0.8rem 0 0;
+      }
+
+      /* ── CTA + footer ─────────────────────────────────────────────────── */
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.75rem;
+      }
+
+      .btn {
+        display: inline-block;
+        border-radius: 0.6rem;
+        padding: 0.7rem 1.15rem;
+        font-weight: 700;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+      }
+
+      .btn-primary {
+        background: var(--gold);
+        color: var(--bg);
+      }
+
+      .btn-secondary {
+        border: 1px solid var(--hairline);
+        color: var(--text);
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .sources {
+        margin-top: 1.25rem;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        max-width: 46rem;
+      }
+
+      .sources li {
+        margin-bottom: 0.3rem;
+      }
+
+      footer {
+        margin-top: clamp(3rem, 7vw, 5rem);
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--hairline);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem 1.25rem;
+        align-items: center;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+
+      footer .spacer {
+        margin-inline-start: auto;
+      }
+
+      .skip {
+        position: absolute;
+        inset-inline-start: -9999px;
+      }
+
+      .skip:focus {
+        inset-inline-start: 1rem;
+        top: 1rem;
+        z-index: 10;
+        background: var(--surface);
+        padding: 0.6rem 1rem;
+        border-radius: 0.5rem;
+      }
+
+      /* ── Motion ───────────────────────────────────────────────────────── */
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+        .btn:hover {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <div class="page">
+      <header class="masthead">
+        <img src="/vicciz-mark.svg" alt="" width="36" height="36" />
+        <span class="wordmark">vicciz</span>
+        <span class="tag">Company pitch</span>
+        <span class="spacer"></span>
+        <nav class="lang" aria-label="Language">
+          <span aria-current="true">EN</span>
+          <a href="/he/" hreflang="he" lang="he">עברית</a>
+        </nav>
+      </header>
+
+      <main id="main">
+        <p class="eyebrow">vicciz · Connected trip infrastructure</p>
+        <h1>
+          The AI agent that re-coordinates
+          <em>the whole trip</em> when travel breaks
+        </h1>
+        <p class="lede">
+          Every disruption tool on the market fixes the one thing its owner
+          sold. Kiipling fixes everything else the delay just broke — across
+          airlines, hotels, transfers and tours, without a single integration.
+        </p>
+
+        <!-- Answer-first block. Deliberately the first substantive prose on
+             the page: retrieval-based engines weight opening content heavily,
+             so this paragraph has to answer "what is vicciz" completely and
+             on its own, without depending on anything below it. -->
+        <div class="summary">
+          <p>
+            <strong>vicciz</strong> is a travel-technology company building
+            <strong>Kiipling</strong>, an AI agent that manages a trip after it
+            is booked. When a flight is delayed or cancelled, Kiipling detects
+            the disruption automatically, works out which hotel, ground
+            transport, tour and activity bookings are about to break, drafts a
+            specific fix for each affected provider, and executes every one of
+            them the moment the traveller approves it. It reaches providers on
+            the channels they already answer — WhatsApp and email — so it
+            needs no API integration with the hotel or the car-rental desk.
+          </p>
+          <p>
+            vicciz sells Kiipling primarily to businesses: online travel
+            agencies, travel agents and tour operators buy it as white-label
+            trip care for their own customers, and the agent signs its messages
+            in their name. The product is also available directly to travellers
+            through the vicciz app. Every provider-facing action requires
+            explicit human approval before it is sent — a deliberate design
+            choice that keeps legal responsibility with the person who holds
+            it. The company is based in Israel and runs entirely on EU
+            infrastructure.
+          </p>
+        </div>
+
+        <ul class="stats">
+          <li class="panel">
+            <span class="figure">4 of 4</span>
+            <span class="label"
+              >Product stages with backend shipped and in production</span
+            >
+          </li>
+          <li class="panel">
+            <span class="figure">80</span>
+            <span class="label">Live API endpoints</span>
+          </li>
+          <li class="panel">
+            <span class="figure">1,283</span>
+            <span class="label">Automated tests passing across 114 files</span>
+          </li>
+          <li class="panel">
+            <span class="figure">$8–15</span>
+            <span class="label"
+              >Target price per resolved incident, versus roughly $25 per
+              human support contact</span
+            >
+          </li>
+        </ul>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://demo.vicciz.com/"
+            >Watch the 64-second demo</a
+          >
+          <a class="btn btn-secondary" href="#contact">Talk to us</a>
+        </div>
+
+        <!-- ── Problem ──────────────────────────────────────────────── -->
+        <section id="problem">
+          <p class="eyebrow">The problem</p>
+          <h2>A trip is assembled from many vendors. It breaks as one.</h2>
+          <p>
+            A traveller books the flight through one site, the hotel through
+            another, the transfer through a third and the tour directly with an
+            operator. When the flight slips two hours, all four bookings are
+            suddenly wrong — but no one company is responsible for more than
+            its own line item.
+          </p>
+          <p>
+            The tools that exist today inherit that boundary. Airline systems
+            re-accommodate passengers onto other flights. Online travel agency
+            servicing engines automate cancellations, exchanges and refunds —
+            for flights. Insurance and claims products pay out after the fact
+            rather than fixing anything. Behind all of them sits a human
+            support layer that costs roughly $25 per contact and is the first
+            budget line every large travel seller is now trying to shrink.
+          </p>
+          <p>
+            Nobody re-coordinates the rest of the trip. That is the gap vicciz
+            was built to fill.
+          </p>
+        </section>
+
+        <!-- ── What it does ─────────────────────────────────────────── -->
+        <section id="what-we-do">
+          <p class="eyebrow">The product</p>
+          <h2>Four things Kiipling does that adjacent tools do not</h2>
+
+          <div class="grid">
+            <article class="panel">
+              <h3>Cross-vendor incident coordination</h3>
+              <p>
+                A delayed flight, a late hotel check-in and a missed transfer
+                are handled as one incident with one timeline, not three
+                unrelated support tickets. The agent reasons about downstream
+                impact — which pickup window moved, which check-in is now
+                outside policy, which tour slot is unreachable.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>No integration required</h3>
+              <p>
+                Kiipling contacts providers over WhatsApp and email, the
+                channels they already staff. A traveller can be onboarded from
+                a reservation number and a date, or from a forwarded booking
+                confirmation the agent parses itself. No GDS connection, no
+                provider API, no passwords.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>Approval as liability architecture</h3>
+              <p>
+                Nothing reaches a provider without explicit human approval.
+                Competitors treat human-in-the-loop as a user-experience choice
+                or a limitation to remove. For a business acting on a
+                customer's behalf it is the mechanism that keeps authority, and
+                legal exposure, with the party that actually holds it.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>Priced per resolved incident</h3>
+              <p>
+                A published absolute price per fixed disruption, rather than a
+                percentage of claimed savings or an opaque enterprise contract.
+                It is directly comparable to the cost of the human contact it
+                replaces, which is the number a travel seller is already
+                measuring.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- ── How it works ─────────────────────────────────────────── -->
+        <section id="how-it-works">
+          <p class="eyebrow">How it works</p>
+          <h2>From detection to executed fix, in five stages</h2>
+          <ol class="steps">
+            <li>
+              <span class="idx" aria-hidden="true">1</span>
+              <div>
+                <h3>Monitor</h3>
+                <p>
+                  Disruption monitors poll flight status and other trip signals
+                  every 30 minutes against the traveller's booked itinerary,
+                  whether or not the trip was booked through a vicciz customer.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span class="idx" aria-hidden="true">2</span>
+              <div>
+                <h3>Interpret</h3>
+                <p>
+                  A three-stage AI pipeline classifies the incident and
+                  identifies each downstream booking at risk, ranked by how
+                  soon it breaks and how hard it is to recover.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span class="idx" aria-hidden="true">3</span>
+              <div>
+                <h3>Draft</h3>
+                <p>
+                  The agent writes a specific message to each affected
+                  provider, in the traveller's language, informed by the
+                  provider's terms and by applicable passenger-rights rules
+                  such as EU261 and US DOT regulations.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span class="idx" aria-hidden="true">4</span>
+              <div>
+                <h3>Approve</h3>
+                <p>
+                  The traveller — or the agency operator acting for them — sees
+                  exactly what will be sent and approves each action
+                  individually. A second review stage checks every draft before
+                  it is offered.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span class="idx" aria-hidden="true">5</span>
+              <div>
+                <h3>Execute and report</h3>
+                <p>
+                  Approved messages go out over WhatsApp and email, replies are
+                  threaded back into the same incident, sentiment is monitored
+                  for escalation, and the business receives a resolution report
+                  for every case.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <!-- ── Where it sits ────────────────────────────────────────── -->
+        <section id="category">
+          <p class="eyebrow">Where Kiipling sits</p>
+          <h2>The layer between paying out and flying you somewhere else</h2>
+          <p>
+            The disruption market divides cleanly by what actually happens at
+            the moment something goes wrong. Most categories either compensate
+            the traveller or rebook a flight. Re-coordinating the remainder of
+            a multi-vendor trip is its own layer.
+          </p>
+          <div class="table-scroll">
+            <table>
+              <caption>
+                Disruption response by category, at the moment of the
+                incident.
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Category</th>
+                  <th scope="col">What it does when a flight breaks</th>
+                  <th scope="col">Fixes the rest of the trip</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Airline recovery systems</th>
+                  <td>Re-accommodates passengers onto other flights</td>
+                  <td class="no">No</td>
+                </tr>
+                <tr>
+                  <th scope="row">Travel-seller servicing engines</th>
+                  <td>Automates flight cancellations, exchanges and refunds</td>
+                  <td class="no">No</td>
+                </tr>
+                <tr>
+                  <th scope="row">Insurance and claims</th>
+                  <td>Pays compensation after the fact</td>
+                  <td class="no">No</td>
+                </tr>
+                <tr>
+                  <th scope="row">Human support teams</th>
+                  <td>Resolves anything, at roughly $25 per contact</td>
+                  <td>Partly, at cost</td>
+                </tr>
+                <tr>
+                  <th scope="row">Kiipling</th>
+                  <td>
+                    Re-coordinates hotel, transfer, tour and activity bookings
+                    as one incident
+                  </td>
+                  <td class="yes">Yes</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ── Current state ────────────────────────────────────────── -->
+        <section id="status">
+          <p class="eyebrow">Where we are — August 2026</p>
+          <h2>The backend is built. The next milestone is scale.</h2>
+          <p>
+            vicciz planned Kiipling in four stages: flight-disruption
+            management, white-label B2B service, direct consumer access, and
+            the full connected-trip platform. The backend for all four is
+            written, tested and deployed.
+          </p>
+
+          <div class="grid">
+            <article class="panel">
+              <h3>Shipped and running</h3>
+              <p>
+                80 API endpoints and 26 database migrations in production on
+                Google Cloud Run. A three-agent pipeline built on Google's
+                Agent Development Kit with Gemini 2.5 Flash, plus a
+                conversational agent with eight-intent classification and
+                preference-aware context. 1,283 automated tests across 114
+                files, all passing.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>Beyond the core loop</h3>
+              <p>
+                A provider-interaction engine spanning five adapter types; a
+                retrieval pipeline over passenger-rights regulation using
+                pgvector embeddings; sentiment analysis with trajectory-based
+                escalation; insurance claims; trip parties; and B2B business
+                registration with branding and billing hooks.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>Next</h3>
+              <p>
+                Production stabilisation, Stripe billing, live weather,
+                transport and hotel feeds for the disruption monitors, a voice
+                channel, and the autonomous-resolution accuracy milestone that
+                turns approved drafts into a measurable resolution rate.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>First pilot</h3>
+              <p>
+                A white-label deployment for small agencies running Kivrey
+                Tsadikim pilgrimage tours: one conversational channel across
+                WhatsApp, phone and email for flights, ground rides and hotel
+                coordination, with operator takeover always available.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- ── Buyers ───────────────────────────────────────────────── -->
+        <section id="who-its-for">
+          <p class="eyebrow">Who buys it</p>
+          <h2>Business first, consumer second</h2>
+          <div class="grid">
+            <article class="panel">
+              <h3>1 · Travel businesses <span class="tag">Priority</span></h3>
+              <p>
+                Online travel agencies, travel agents and tour operators buy
+                Kiipling as a managed service for their customers. They push
+                trip data over an API and get a dashboard for monitoring trips,
+                escalation reports and resolution metrics. The agent writes to
+                their customers in their name. Mid-market European operators
+                are the wedge: they feel disruption costs acutely and cannot
+                build this themselves.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>2 · Travellers, through the vicciz app</h3>
+              <p>
+                Trip data flows automatically from the app to the agent, with
+                no proof of purchase required, and the agent operates under the
+                vicciz brand on a consumer subscription.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>3 · Travellers, directly</h3>
+              <p>
+                Anyone can forward a booking confirmation for the agent to
+                parse, or enter reservation numbers by hand. Whatever can be
+                verified is verified; the rest is flagged for review.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- ── Why now ──────────────────────────────────────────────── -->
+        <section id="why-now">
+          <p class="eyebrow">Why now</p>
+          <h2>The cost of human trip care is being cut, everywhere</h2>
+          <p>
+            Large travel sellers have spent the last two years replacing
+            support headcount with automation, and they are publishing the
+            savings. That creates a budget line for anything that resolves a
+            case without a person, and a service gap wherever the automation
+            stops — which, today, is at the edge of whatever the seller sold.
+          </p>
+          <p>
+            The regulatory backdrop compounds it. EU passenger-rights
+            compensation under EU261 represents an estimated €6.5&nbsp;billion
+            a year, of which roughly two-thirds goes unclaimed. An agent that
+            already knows the rules can fix the trip and file the claim in the
+            same flow — something neither the claims companies nor the airline
+            tools attempt.
+          </p>
+        </section>
+
+        <!-- ── FAQ ──────────────────────────────────────────────────── -->
+        <section id="faq">
+          <p class="eyebrow">Questions</p>
+          <h2>Frequently asked</h2>
+          <div class="faq">
+            <details>
+              <summary>What is vicciz?</summary>
+              <p>
+                vicciz is a travel-technology company that builds Kiipling, an
+                AI agent for managing trips after they are booked. Its core
+                capability is re-coordinating every downstream booking — hotel,
+                ground transport, tour, activity — when a flight is delayed or
+                cancelled.
+              </p>
+            </details>
+            <details>
+              <summary>What is the difference between vicciz and Kiipling?</summary>
+              <p>
+                vicciz is the company and the consumer-facing brand. Kiipling is
+                the AI trip agent it builds, and the product travel businesses
+                license as white-label trip care.
+              </p>
+            </details>
+            <details>
+              <summary>
+                How is this different from flight-rebooking automation?
+              </summary>
+              <p>
+                Flight-rebooking tools resolve the flight. Kiipling starts where
+                they stop: it identifies the hotel check-in, transfer pickup and
+                tour booking that the new flight time has broken, and fixes each
+                one with its provider. It works across vendors, including
+                bookings a traveller made somewhere else entirely.
+              </p>
+            </details>
+            <details>
+              <summary>Does Kiipling act without asking the traveller?</summary>
+              <p>
+                No. Every provider-facing action requires explicit human
+                approval before it is sent. The agent detects, decides and
+                drafts autonomously, then waits. This is a deliberate liability
+                architecture, not a temporary limitation.
+              </p>
+            </details>
+            <details>
+              <summary>Does a travel business need to integrate anything?</summary>
+              <p>
+                A business pushes trip data to one API and receives a dashboard.
+                No integration is required with the hotels, transfer companies
+                or tour operators themselves — Kiipling reaches those over
+                WhatsApp and email, the channels they already answer.
+              </p>
+            </details>
+            <details>
+              <summary>What does it cost?</summary>
+              <p>
+                Kiipling is priced per resolved incident, in a target range of
+                $8 to $15 per disrupted trip, set against a human support
+                contact costing roughly $25. Business pricing is a subscription
+                or per-customer agreement depending on volume.
+              </p>
+            </details>
+            <details>
+              <summary>Which channels does the agent use?</summary>
+              <p>
+                WhatsApp and email today, with a voice channel planned. It
+                replies in the traveller's preferred language and respects
+                stored preferences for channel and contact hours.
+              </p>
+            </details>
+            <details>
+              <summary>Where is data hosted?</summary>
+              <p>
+                Entirely in the EU. Application services run on Google Cloud Run
+                in <span lang="de">europe-west3</span> (Frankfurt), with
+                PostgreSQL persistence in <code>eu-central-1</code>.
+              </p>
+            </details>
+            <details>
+              <summary>Is Kiipling available today?</summary>
+              <p>
+                The backend for all four product stages is deployed and running
+                as of August 2026, and the first white-label agency pilot is
+                underway. vicciz is talking to travel businesses about further
+                pilots now.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <!-- ── Contact ──────────────────────────────────────────────── -->
+        <section id="contact">
+          <p class="eyebrow">Next step</p>
+          <h2>See it break a trip and put it back together</h2>
+          <p>
+            The demo is 64 seconds: one flight delay, three downstream bookings
+            rebuilt, each one approved before it is sent.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://demo.vicciz.com/"
+              >Watch the demo</a
+            >
+            <a class="btn btn-secondary" href="mailto:hello@vicciz.com"
+              >hello@vicciz.com</a
+            >
+          </div>
+
+          <ul class="sources">
+            <li>
+              Product and engineering figures are vicciz internal records as of
+              August 2026.
+            </li>
+            <li>
+              EU261 compensation pool and unclaimed share: industry estimates
+              reported by Skycop and AeroTime, 2025.
+            </li>
+            <li>
+              Cost per human support contact: business-process-outsourcing
+              benchmarks for travel customer service.
+            </li>
+          </ul>
+        </section>
+      </main>
+
+      <footer>
+        <span>© 2026 vicciz</span>
+        <a href="https://demo.vicciz.com/">Product demo</a>
+        <a href="/he/" hreflang="he" lang="he">עברית</a>
+        <span class="spacer"></span>
+        <span
+          >Last updated
+          <time datetime="2026-08-10">10 August 2026</time></span
+        >
+      </footer>
+    </div>
+
+    <!-- Structured data. Google treats this as optional for AI features, but
+         it is a confirmed parsing aid for other engines, so Organization +
+         SoftwareApplication + FAQPage are all declared explicitly. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://vicciz.com/#organization",
+            "name": "vicciz",
+            "alternateName": ["Vicciz", "ויקיז", "vicciz Kiipling"],
+            "url": "https://vicciz.com/",
+            "logo": "https://pitch.vicciz.com/vicciz-mark.svg",
+            "email": "hello@vicciz.com",
+            "description": "vicciz builds Kiipling, an AI agent that re-coordinates every downstream booking in a trip when a flight is delayed or cancelled. Sold to online travel agencies, travel agents and tour operators as white-label trip care.",
+            "foundingLocation": {
+              "@type": "Country",
+              "name": "Israel"
+            },
+            "knowsAbout": [
+              "travel disruption management",
+              "flight delay compensation",
+              "EU261 passenger rights",
+              "AI travel agents",
+              "post-booking trip care",
+              "white-label trip management for OTAs"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://pitch.vicciz.com/#website",
+            "url": "https://pitch.vicciz.com/",
+            "name": "vicciz — company pitch",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://vicciz.com/#organization" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://pitch.vicciz.com/#webpage",
+            "url": "https://pitch.vicciz.com/",
+            "name": "vicciz — the AI agent that re-coordinates the whole trip when travel breaks",
+            "isPartOf": { "@id": "https://pitch.vicciz.com/#website" },
+            "about": { "@id": "https://vicciz.com/#organization" },
+            "inLanguage": "en",
+            "datePublished": "2026-08-10",
+            "dateModified": "2026-08-10"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "Kiipling",
+            "applicationCategory": "BusinessApplication",
+            "applicationSubCategory": "Travel disruption management",
+            "operatingSystem": "Web, WhatsApp, Email",
+            "url": "https://pitch.vicciz.com/",
+            "author": { "@id": "https://vicciz.com/#organization" },
+            "description": "Kiipling is an AI agent that detects travel disruption, identifies every downstream booking at risk, drafts a fix for each provider, and executes it once a human approves. It requires no integration with providers and reaches them over WhatsApp and email.",
+            "featureList": [
+              "Automatic flight disruption detection",
+              "Cross-vendor incident coordination across hotels, transfers and tours",
+              "Provider outreach over WhatsApp and email with no API integration",
+              "Mandatory human approval before any provider-facing action",
+              "EU261 and US DOT passenger-rights awareness",
+              "White-label deployment for OTAs, travel agents and tour operators",
+              "Sentiment-based escalation and resolution reporting"
+            ],
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "USD",
+              "price": "8",
+              "description": "Target pricing from $8 to $15 per resolved disruption incident.",
+              "availability": "https://schema.org/PreOrder"
+            }
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://pitch.vicciz.com/#faq",
+            "inLanguage": "en",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is vicciz?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "vicciz is a travel-technology company that builds Kiipling, an AI agent for managing trips after they are booked. Its core capability is re-coordinating every downstream booking — hotel, ground transport, tour, activity — when a flight is delayed or cancelled."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is the difference between vicciz and Kiipling?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "vicciz is the company and the consumer-facing brand. Kiipling is the AI trip agent it builds, and the product travel businesses license as white-label trip care."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How is this different from flight-rebooking automation?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Flight-rebooking tools resolve the flight. Kiipling starts where they stop: it identifies the hotel check-in, transfer pickup and tour booking that the new flight time has broken, and fixes each one with its provider. It works across vendors, including bookings a traveller made somewhere else entirely."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does Kiipling act without asking the traveller?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Every provider-facing action requires explicit human approval before it is sent. The agent detects, decides and drafts autonomously, then waits. This is a deliberate liability architecture, not a temporary limitation."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does a travel business need to integrate anything?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A business pushes trip data to one API and receives a dashboard. No integration is required with the hotels, transfer companies or tour operators themselves — Kiipling reaches those over WhatsApp and email, the channels they already answer."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What does Kiipling cost?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Kiipling is priced per resolved incident, in a target range of $8 to $15 per disrupted trip, set against a human support contact costing roughly $25. Business pricing is a subscription or per-customer agreement depending on volume."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Which channels does the agent use?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "WhatsApp and email today, with a voice channel planned. It replies in the traveller's preferred language and respects stored preferences for channel and contact hours."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Where is vicciz data hosted?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Entirely in the EU. Application services run on Google Cloud Run in europe-west3 (Frankfurt), with PostgreSQL persistence in eu-central-1."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is Kiipling available today?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The backend for all four product stages is deployed and running as of August 2026, and the first white-label agency pilot is underway. vicciz is talking to travel businesses about further pilots now."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </body>
+</html>

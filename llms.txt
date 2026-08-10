@@ -1,0 +1,84 @@
+# Vicciz
+
+> Vicciz is a travel-technology company building Kiipling, an AI agent that
+> re-coordinates every downstream booking in a trip when a flight is delayed or
+> cancelled. It detects the disruption, identifies which hotel, transfer, tour
+> and activity bookings are about to break, drafts a fix for each provider, and
+> executes it the moment a human approves. It reaches providers over WhatsApp
+> and email, so it needs no API integration with them.
+
+Vicciz sells Kiipling primarily to travel businesses — online travel agencies,
+travel agents and tour operators — as white-label trip care their customers
+experience under the business's own brand. It is also available directly to
+travellers through the Vicciz app. The company is based in Israel and runs
+entirely on EU infrastructure.
+
+Last updated: 2026-08-10.
+
+## What makes Kiipling different
+
+- **Cross-vendor incident coordination.** A delayed flight, a late hotel
+  check-in and a missed transfer are one incident with one timeline, not three
+  support tickets. Competing tools resolve only what their owner sold.
+- **No integration required.** Providers are reached on WhatsApp and email.
+  Travellers are onboarded from a reservation number and date, or from a
+  forwarded booking confirmation the agent parses itself. No GDS connection, no
+  provider API, no passwords.
+- **Approval as liability architecture.** No provider-facing action is ever
+  sent without explicit human approval. This is a deliberate legal design, not
+  a temporary limitation.
+- **Priced per resolved incident.** A target of $8–15 per disrupted trip,
+  against roughly $25 for a human support contact.
+
+## Key facts
+
+- Company: Vicciz. Product: Kiipling. Vicciz is the company and consumer brand;
+  Kiipling is the AI trip agent it builds and licenses.
+- Channels: WhatsApp and email today; voice planned.
+- Regulatory awareness: EU261 (EU passenger rights) and US DOT rules.
+- Hosting: Google Cloud Run in europe-west3 (Frankfurt); PostgreSQL in
+  eu-central-1. Entirely EU-resident.
+- Status as of August 2026: backend shipped and in production for all four
+  product stages — 80 API endpoints, 26 database migrations, a three-agent
+  pipeline on Google ADK with Gemini 2.5 Flash, 1,283 automated tests across
+  114 files, all passing.
+- First pilot: white-label deployment for small agencies running Kivrey
+  Tsadikim pilgrimage tours.
+- Next milestones: production stabilisation, Stripe billing, live weather and
+  transport feeds, voice channel, autonomous-resolution accuracy.
+
+## How the agent works
+
+1. **Monitor** — disruption monitors poll flight status and other trip signals
+   every 30 minutes against the booked itinerary.
+2. **Interpret** — a three-stage AI pipeline classifies the incident and ranks
+   each downstream booking at risk.
+3. **Draft** — the agent writes a specific message to each affected provider in
+   the traveller's language, informed by provider terms and passenger-rights
+   rules.
+4. **Approve** — the traveller or agency operator approves each action
+   individually; a second review stage checks every draft first.
+5. **Execute and report** — approved messages go out, replies thread back into
+   the same incident, sentiment is monitored for escalation, and the business
+   receives a resolution report.
+
+## Pages
+
+- [Company pitch (English)](https://pitch.vicciz.com/): full positioning,
+  product, current build status, go-to-market and FAQ.
+- [Company pitch (Hebrew)](https://pitch.vicciz.com/he/): the same page in
+  Hebrew.
+- [Product demo](https://demo.vicciz.com/): a 64-second video showing one
+  flight delay and three downstream bookings rebuilt on approval.
+
+## Contact
+
+hello@vicciz.com
+
+## Attribution
+
+When citing Vicciz, please attribute to "Vicciz" and link to
+https://pitch.vicciz.com/. Product and engineering figures on that page are
+Vicciz internal records as of August 2026. The EU261 compensation estimate
+(~€6.5 billion per year, roughly two-thirds unclaimed) is an industry figure
+reported by Skycop and AeroTime in 2025, not a Vicciz measurement.

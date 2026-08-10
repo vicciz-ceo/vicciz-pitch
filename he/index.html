@@ -1,0 +1,1158 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+
+    <title>vicciz — סוכן ה-AI שמרכיב מחדש את הטיול כשהטיסה משתבשת</title>
+    <meta
+      name="description"
+      content="vicciz מפתחת את Kiipling: סוכן AI שמזהה שיבוש בטיסה, מאתר את כל ההזמנות שנשברות בעקבותיו — מלון, הסעה, טיול — מנסח פנייה לכל ספק ושולח אותה ברגע שהנוסע מאשר. בלי אינטגרציה, מול כל ספק. לסוכנויות נסיעות ול-OTAs."
+    />
+    <link rel="canonical" href="https://pitch.vicciz.com/he/" />
+    <meta
+      name="robots"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
+
+    <link rel="alternate" hreflang="en" href="https://pitch.vicciz.com/" />
+    <link rel="alternate" hreflang="he" href="https://pitch.vicciz.com/he/" />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://pitch.vicciz.com/"
+    />
+
+    <meta name="author" content="vicciz" />
+    <link rel="icon" type="image/svg+xml" href="/vicciz-mark.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="vicciz" />
+    <meta property="og:locale" content="he_IL" />
+    <meta property="og:locale:alternate" content="en" />
+    <meta
+      property="og:title"
+      content="vicciz — סוכן ה-AI שמרכיב מחדש את הטיול כשהטיסה משתבשת"
+    />
+    <meta
+      property="og:description"
+      content="עיכוב אחד שובר את המלון, את ההסעה ואת הארוחה. Kiipling מסדר את כולם — מול כל ספק, בלי אינטגרציה, ושום דבר לא יוצא בלי אישור הנוסע."
+    />
+    <meta property="og:url" content="https://pitch.vicciz.com/he/" />
+    <meta property="og:image" content="https://demo.vicciz.com/poster.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="vicciz — שכבת השיבושים לטיולים שמורכבים מכמה ספקים"
+    />
+    <meta
+      name="twitter:description"
+      content="Kiipling מזהה את השיבוש, מנסח פנייה לכל הזמנה שנשברה, ושולח אותה באישור."
+    />
+    <meta name="twitter:image" content="https://demo.vicciz.com/poster.jpg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Hebrew type: Frank Ruhl Libre carries the display-serif role that Lora
+         holds in English; Heebo carries the Lato body role. The brand's
+         serif-display / sans-body structure survives the script change. -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;600;700&family=Heebo:wght@300;400;700;900&display=swap"
+    />
+
+    <style>
+      /* ── vicciz marketing design language (RTL) ────────────────────────
+         Tokens identical to pitch.vicciz.com and demo.vicciz.com. Only the
+         two font stacks differ; every rule below uses logical properties so
+         the layout mirrors itself under dir="rtl". See DESIGN.md. */
+      :root {
+        --navy: rgb(22 51 90);
+        --gold: rgb(224 137 44);
+        --red: rgb(239 68 68);
+        --green: rgb(52 211 153);
+        --bg: rgb(11 18 32);
+        --surface: rgb(19 32 58);
+        --text: rgb(255 255 255);
+        --text-secondary: rgb(255 255 255 / 0.72);
+        --text-muted: rgb(255 255 255 / 0.5);
+        --hairline: rgb(255 255 255 / 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-height: 100vh;
+        background: var(--bg);
+        background-image:
+          radial-gradient(
+            60rem 40rem at 22% 12%,
+            rgb(224 137 44 / 0.13),
+            transparent 62%
+          ),
+          radial-gradient(
+            52rem 42rem at 88% 88%,
+            rgb(22 51 90 / 0.55),
+            transparent 65%
+          );
+        color: var(--text);
+        font-family: Heebo, "Segoe UI", system-ui, -apple-system, sans-serif;
+        font-weight: 400;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .page {
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: clamp(1.75rem, 4vw, 3.5rem) clamp(1.25rem, 4vw, 2.5rem)
+          clamp(3rem, 6vw, 5rem);
+      }
+
+      /* ── Masthead ─────────────────────────────────────────────────────── */
+
+      .masthead {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        flex-wrap: wrap;
+        margin-bottom: clamp(2.5rem, 6vw, 4rem);
+      }
+
+      .masthead img {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 0.6rem;
+      }
+
+      /* The wordmark is always the Latin lockup, in every locale. */
+      .masthead .wordmark {
+        font-family: "Frank Ruhl Libre", Georgia, serif;
+        font-weight: 600;
+        font-size: 1.2rem;
+        direction: ltr;
+        unicode-bidi: isolate;
+      }
+
+      .tag {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: var(--gold);
+        border: 1px solid rgb(224 137 44 / 0.4);
+        border-radius: 999px;
+        padding: 0.3rem 0.75rem;
+        white-space: nowrap;
+      }
+
+      .masthead .spacer {
+        margin-inline-start: auto;
+      }
+
+      .lang {
+        display: flex;
+        align-items: center;
+        gap: 0.15rem;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 0.15rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .lang a,
+      .lang span {
+        padding: 0.28rem 0.7rem;
+        border-radius: 999px;
+        text-decoration: none;
+        color: var(--text-muted);
+        line-height: 1;
+      }
+
+      .lang [aria-current="true"] {
+        background: rgb(224 137 44 / 0.14);
+        color: var(--gold);
+      }
+
+      .lang a:hover {
+        color: var(--text);
+      }
+
+      /* ── Type scale ───────────────────────────────────────────────────── */
+
+      h1 {
+        font-family: "Frank Ruhl Libre", Georgia, serif;
+        font-weight: 600;
+        font-size: clamp(2rem, 5.2vw, 3.1rem);
+        line-height: 1.25;
+        margin: 0 0 1.1rem;
+        text-wrap: balance;
+        max-width: 22ch;
+      }
+
+      h1 em {
+        font-style: normal;
+        color: var(--gold);
+      }
+
+      h2 {
+        font-family: "Frank Ruhl Libre", Georgia, serif;
+        font-weight: 600;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        line-height: 1.35;
+        margin: 0 0 0.6rem;
+        text-wrap: balance;
+      }
+
+      h3 {
+        font-family: Heebo, sans-serif;
+        font-weight: 700;
+        font-size: 1.05rem;
+        margin: 0 0 0.4rem;
+      }
+
+      p {
+        margin: 0 0 1rem;
+        max-width: 46rem;
+      }
+
+      .eyebrow {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: var(--gold);
+        margin: 0 0 0.9rem;
+      }
+
+      .lede {
+        font-size: clamp(1.02rem, 1.6vw, 1.14rem);
+        color: var(--text-secondary);
+        max-width: 38rem;
+        text-wrap: pretty;
+      }
+
+      section {
+        margin-top: clamp(3rem, 7vw, 5rem);
+        scroll-margin-top: 2rem;
+      }
+
+      section > p {
+        color: var(--text-secondary);
+      }
+
+      a {
+        color: var(--gold);
+        text-underline-offset: 0.2em;
+      }
+
+      :focus-visible {
+        outline: 3px solid rgb(224 137 44 / 0.5);
+        outline-offset: 2px;
+      }
+
+      code,
+      .ltr {
+        direction: ltr;
+        unicode-bidi: isolate;
+        display: inline-block;
+      }
+
+      /* ── Panels ───────────────────────────────────────────────────────── */
+
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 1rem;
+        padding: clamp(1.25rem, 2.5vw, 1.75rem);
+      }
+
+      .grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+        margin-top: 1.75rem;
+      }
+
+      .grid p:last-child,
+      .panel p:last-child {
+        margin-bottom: 0;
+      }
+
+      .panel p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+
+      /* ── Answer-first summary block ───────────────────────────────────── */
+
+      .summary {
+        border-inline-start: 3px solid var(--gold);
+        background: rgb(224 137 44 / 0.05);
+        border-start-end-radius: 1rem;
+        border-end-end-radius: 1rem;
+        padding: clamp(1.1rem, 2.5vw, 1.6rem) clamp(1.2rem, 3vw, 1.9rem);
+        margin-top: 2.5rem;
+      }
+
+      .summary p {
+        color: var(--text-secondary);
+        max-width: 54rem;
+      }
+
+      .summary p:first-of-type {
+        color: var(--text);
+      }
+
+      /* ── Stat tiles ───────────────────────────────────────────────────── */
+
+      .stats {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+        margin-top: 1.75rem;
+        padding: 0;
+        list-style: none;
+      }
+
+      .stats .figure {
+        display: block;
+        font-family: "Frank Ruhl Libre", Georgia, serif;
+        font-weight: 600;
+        font-size: clamp(1.75rem, 4vw, 2.4rem);
+        line-height: 1.2;
+        color: var(--gold);
+      }
+
+      .stats .label {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: 0.35rem;
+        line-height: 1.5;
+      }
+
+      /* ── Numbered steps ───────────────────────────────────────────────── */
+
+      .steps {
+        list-style: none;
+        margin: 1.75rem 0 0;
+        padding: 0;
+        display: grid;
+        gap: 1rem;
+      }
+
+      .steps li {
+        display: grid;
+        grid-template-columns: 1.6rem 1fr;
+        gap: 0.9rem;
+        align-items: start;
+      }
+
+      .steps .idx {
+        width: 1.6rem;
+        height: 1.6rem;
+        border-radius: 999px;
+        background: rgb(224 137 44 / 0.12);
+        color: var(--gold);
+        font-size: 0.8rem;
+        font-weight: 700;
+        display: grid;
+        place-items: center;
+        margin-top: 0.3rem;
+      }
+
+      .steps p {
+        color: var(--text-secondary);
+        margin: 0.15rem 0 0;
+        font-size: 0.95rem;
+      }
+
+      /* ── Comparison table ─────────────────────────────────────────────── */
+
+      .table-scroll {
+        overflow-x: auto;
+        margin-top: 1.75rem;
+        border: 1px solid var(--hairline);
+        border-radius: 1rem;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 34rem;
+        font-size: 0.92rem;
+      }
+
+      caption {
+        text-align: start;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        padding: 0.9rem 1.1rem 0;
+      }
+
+      th,
+      td {
+        text-align: start;
+        padding: 0.8rem 1.1rem;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+      }
+
+      thead th {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        font-weight: 700;
+      }
+
+      tbody th {
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      td {
+        color: var(--text-secondary);
+      }
+
+      tbody tr:last-child th,
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .yes {
+        color: var(--green);
+        font-weight: 700;
+      }
+
+      .no {
+        color: var(--red);
+        font-weight: 700;
+      }
+
+      /* ── FAQ ──────────────────────────────────────────────────────────── */
+
+      .faq {
+        display: grid;
+        gap: 0.75rem;
+        margin-top: 1.75rem;
+      }
+
+      .faq details {
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 1rem;
+        padding: 1rem clamp(1.1rem, 2.5vw, 1.5rem);
+      }
+
+      .faq summary {
+        cursor: pointer;
+        font-weight: 700;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .faq summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq summary::after {
+        content: "+";
+        color: var(--gold);
+        font-size: 1.3rem;
+        line-height: 1;
+        flex: none;
+      }
+
+      .faq details[open] summary::after {
+        content: "−";
+      }
+
+      .faq details p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin: 0.8rem 0 0;
+      }
+
+      /* ── CTA + footer ─────────────────────────────────────────────────── */
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.75rem;
+      }
+
+      .btn {
+        display: inline-block;
+        border-radius: 0.6rem;
+        padding: 0.7rem 1.15rem;
+        font-weight: 700;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+      }
+
+      .btn-primary {
+        background: var(--gold);
+        color: var(--bg);
+      }
+
+      .btn-secondary {
+        border: 1px solid var(--hairline);
+        color: var(--text);
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .sources {
+        margin-top: 1.25rem;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        max-width: 46rem;
+        line-height: 1.6;
+      }
+
+      .sources li {
+        margin-bottom: 0.3rem;
+      }
+
+      footer {
+        margin-top: clamp(3rem, 7vw, 5rem);
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--hairline);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem 1.25rem;
+        align-items: center;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+
+      footer .spacer {
+        margin-inline-start: auto;
+      }
+
+      .skip {
+        position: absolute;
+        inset-inline-start: -9999px;
+      }
+
+      .skip:focus {
+        inset-inline-start: 1rem;
+        top: 1rem;
+        z-index: 10;
+        background: var(--surface);
+        padding: 0.6rem 1rem;
+        border-radius: 0.5rem;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+        .btn:hover {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a class="skip" href="#main">דילוג לתוכן</a>
+
+    <div class="page">
+      <header class="masthead">
+        <img src="/vicciz-mark.svg" alt="" width="36" height="36" />
+        <span class="wordmark">vicciz</span>
+        <span class="tag">מצגת חברה</span>
+        <span class="spacer"></span>
+        <nav class="lang" aria-label="שפה">
+          <a href="/" hreflang="en" lang="en">EN</a>
+          <span aria-current="true">עברית</span>
+        </nav>
+      </header>
+
+      <main id="main">
+        <p class="eyebrow">vicciz · תשתית לטיול מחובר</p>
+        <h1>סוכן ה-AI שמרכיב מחדש <em>את כל הטיול</em> כשהטיסה משתבשת</h1>
+        <p class="lede">
+          כל כלי שיבושים בשוק יודע לתקן בדיוק דבר אחד — את מה שהוא עצמו מכר.
+          Kiipling מטפל בכל השאר: המלון, ההסעה והטיול שנשברו יחד עם הטיסה. בלי
+          אינטגרציה אחת.
+        </p>
+
+        <div class="summary">
+          <p>
+            <strong>vicciz</strong> היא חברת טכנולוגיה בתחום התיירות, שמפתחת את
+            <strong>Kiipling</strong> — סוכן AI שמנהל את הטיול אחרי שהוא כבר
+            הוזמן. כשטיסה מתעכבת או מתבטלת, Kiipling מזהה את זה לבד, מבין אילו
+            הזמנות עומדות להישבר בעקבות זה (צ׳ק-אין במלון, איסוף של ההסעה, מקום
+            בטיול), מנסח פנייה מדויקת לכל ספק שנפגע, ושולח אותה ברגע שהנוסע
+            מאשר. הפנייה יוצאת בערוצים שהספקים ממילא עונים בהם — וואטסאפ
+            ואימייל — ולכן לא צריך שום חיבור טכני למלון או לחברת ההשכרה.
+          </p>
+          <p>
+            vicciz מוכרת את Kiipling בעיקר לעסקים: סוכנויות נסיעות מקוונות
+            (OTA), סוכני נסיעות ומפעילי טיולים מקבלים שירות ליווי נוסעים בלייבל
+            לבן, והסוכן מדבר עם הלקוחות שלהם בשמם. המוצר זמין גם ישירות לנוסעים
+            דרך אפליקציית vicciz. שום פנייה לא יוצאת לספק בלי אישור אנושי מפורש
+            — זו החלטת תכנון מכוונת, שמשאירה את האחריות המשפטית אצל מי שממילא
+            נושא בה. החברה פועלת מישראל, וכל התשתית שלה יושבת באירופה.
+          </p>
+        </div>
+
+        <ul class="stats">
+          <li class="panel">
+            <span class="figure">4 מתוך 4</span>
+            <span class="label">שלבי המוצר שה-backend שלהם כבר בפרודקשן</span>
+          </li>
+          <li class="panel">
+            <span class="figure">80</span>
+            <span class="label">endpoints פעילים ב-API</span>
+          </li>
+          <li class="panel">
+            <span class="figure">1,283</span>
+            <span class="label">בדיקות אוטומטיות עוברות, ב-114 קבצים</span>
+          </li>
+          <li class="panel">
+            <span class="figure ltr">$8–15</span>
+            <span class="label"
+              >מחיר יעד לכל שיבוש שנפתר — מול כ-25 דולר לפנייה לנציג</span
+            >
+          </li>
+        </ul>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://demo.vicciz.com/"
+            >לצפייה בדמו (64 שניות)</a
+          >
+          <a class="btn btn-secondary" href="#contact">דברו איתנו</a>
+        </div>
+
+        <!-- ── Problem ──────────────────────────────────────────────── -->
+        <section id="problem">
+          <p class="eyebrow">הבעיה</p>
+          <h2>הטיול מורכב מהרבה ספקים. הוא נשבר במכה אחת.</h2>
+          <p>
+            הנוסע מזמין טיסה באתר אחד, מלון באתר שני, הסעה בשלישי וטיול ישירות
+            מול המפעיל. הטיסה זזה בשעתיים — וארבע ההזמנות כבר לא מסתדרות זו עם
+            זו. אבל אף חברה לא אחראית על יותר מהשורה שהיא מכרה.
+          </p>
+          <p>
+            הכלים שקיימים היום יורשים בדיוק את הגבול הזה. חברות התעופה משבצות
+            את הנוסע לטיסה אחרת. מערכות השירות של הסוכנויות המקוונות יודעות
+            לבטל, לשנות ולהחזיר כסף — על טיסות. חברות הביטוח משלמות פיצוי אחרי
+            שהכול כבר נגמר, במקום למנוע את הנזק. ומתחת לכולן יושבת שכבת תמיכה
+            אנושית שעולה בסביבות 25 דולר לפנייה, והיא הסעיף הראשון שכל מוכר
+            נסיעות גדול מנסה לצמצם עכשיו.
+          </p>
+          <p>את שאר הטיול אף אחד לא מסדר. בשביל הפער הזה הוקמה vicciz.</p>
+        </section>
+
+        <!-- ── What it does ─────────────────────────────────────────── -->
+        <section id="what-we-do">
+          <p class="eyebrow">המוצר</p>
+          <h2>ארבעה דברים ש-Kiipling עושה, ואף כלי אחר בשוק לא</h2>
+
+          <div class="grid">
+            <article class="panel">
+              <h3>אירוע אחד, לא שלוש פניות</h3>
+              <p>
+                טיסה שהתעכבה, צ׳ק-אין שהתפספס והסעה שלא תגיע הם אירוע אחד עם
+                ציר זמן אחד, ולא שלוש פניות תמיכה נפרדות. הסוכן מבין מה נגרר
+                ממה: איזה חלון איסוף זז, איזה צ׳ק-אין כבר חורג מהמדיניות, לאיזה
+                טיול אי אפשר להספיק.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>בלי אינטגרציה, בכלל</h3>
+              <p>
+                Kiipling פונה לספקים בוואטסאפ ובאימייל — הערוצים שיש בהם ממילא
+                מישהו שעונה. נוסע נכנס למערכת עם מספר הזמנה ותאריך, או פשוט
+                מעביר את אישור ההזמנה והסוכן קורא אותו לבד. בלי GDS, בלי API של
+                ספק, בלי סיסמאות.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>האישור הוא ההגנה המשפטית</h3>
+              <p>
+                שום דבר לא יוצא לספק בלי אישור אנושי מפורש. אצל המתחרים, אדם
+                בלולאה הוא או פיצ׳ר של חוויית משתמש או מגבלה שרוצים להיפטר
+                ממנה. לעסק שפועל בשם לקוח, זה בדיוק המנגנון שמשאיר את הסמכות —
+                ואת החשיפה המשפטית — אצל מי שאמור לשאת בהן.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>משלמים לפי שיבוש שנפתר</h3>
+              <p>
+                מחיר מוחלט ומפורסם לכל שיבוש שטופל, ולא אחוז מ״חיסכון״ שקשה
+                לאמת או חוזה ארגוני אטום. אפשר להשוות אותו ישירות לעלות הפנייה
+                לנציג שהוא מחליף — וזה מספר שכל מוכר נסיעות כבר מודד.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- ── How it works ─────────────────────────────────────────── -->
+        <section id="how-it-works">
+          <p class="eyebrow">איך זה עובד</p>
+          <h2>מזיהוי ועד ביצוע, בחמישה שלבים</h2>
+          <ol class="steps">
+            <li>
+              <span class="idx" aria-hidden="true">1</span>
+              <div>
+                <h3>ניטור</h3>
+                <p>
+                  המערכת בודקת סטטוס טיסות ואותות נוספים כל 30 דקות מול המסלול
+                  שהוזמן — גם אם הטיול לא הוזמן דרך לקוח של vicciz.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span class="idx" aria-hidden="true">2</span>
+              <div>
+                <h3>הבנה</h3>
+                <p>
+                  מנוע תלת-שלבי מסווג את האירוע ומזהה כל הזמנה שבסיכון, לפי
+                  הסדר: מה נשבר הכי מהר ומה יהיה הכי קשה לשחזר.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span class="idx" aria-hidden="true">3</span>
+              <div>
+                <h3>ניסוח</h3>
+                <p>
+                  הסוכן כותב פנייה ספציפית לכל ספק שנפגע, בשפה של הנוסע, על בסיס
+                  תנאי הספק וזכויות הנוסע הרלוונטיות — EU261 באירופה, תקנות
+                  ה-DOT בארה״ב.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span class="idx" aria-hidden="true">4</span>
+              <div>
+                <h3>אישור</h3>
+                <p>
+                  הנוסע, או נציג הסוכנות מטעמו, רואה בדיוק מה עומד לצאת ומאשר
+                  כל פנייה בנפרד. לפני זה עוד שלב ביקורת עובר על כל טיוטה.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span class="idx" aria-hidden="true">5</span>
+              <div>
+                <h3>ביצוע ודיווח</h3>
+                <p>
+                  הפניות המאושרות יוצאות בוואטסאפ ובאימייל, התשובות חוזרות לאותו
+                  אירוע, המערכת עוקבת אחרי מצב הרוח של הנוסע ומסלימה כשצריך,
+                  והעסק מקבל דוח סגירה על כל מקרה.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <!-- ── Where it sits ────────────────────────────────────────── -->
+        <section id="category">
+          <p class="eyebrow">איפה זה יושב בשוק</p>
+          <h2>השכבה שבין לפצות את הנוסע לבין להטיס אותו הלאה</h2>
+          <p>
+            אפשר לחלק את שוק השיבושים לפי מה שקורה בפועל ברגע שמשהו משתבש. רוב
+            הקטגוריות או משלמות לנוסע פיצוי, או מוצאות לו טיסה אחרת. לסדר את כל
+            שאר הטיול, זה שמורכב מכמה ספקים — זו שכבה בפני עצמה.
+          </p>
+          <div class="table-scroll">
+            <table>
+              <caption>
+                מה כל קטגוריה עושה ברגע השיבוש.
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">קטגוריה</th>
+                  <th scope="col">מה היא עושה כשהטיסה נשברת</th>
+                  <th scope="col">מסדרת את שאר הטיול</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">מערכות של חברות תעופה</th>
+                  <td>משבצות את הנוסע לטיסה אחרת</td>
+                  <td class="no">לא</td>
+                </tr>
+                <tr>
+                  <th scope="row">מערכות שירות של מוכרי נסיעות</th>
+                  <td>מבטלות, משנות ומחזירות כסף — על טיסות</td>
+                  <td class="no">לא</td>
+                </tr>
+                <tr>
+                  <th scope="row">ביטוח ותביעות</th>
+                  <td>משלמים פיצוי אחרי שהכול נגמר</td>
+                  <td class="no">לא</td>
+                </tr>
+                <tr>
+                  <th scope="row">מוקדי תמיכה אנושיים</th>
+                  <td>פותרים הכול — בכ-25 דולר לפנייה</td>
+                  <td>חלקית, ובעלות גבוהה</td>
+                </tr>
+                <tr>
+                  <th scope="row">Kiipling</th>
+                  <td>מסדר מחדש את המלון, ההסעה והטיול כאירוע אחד</td>
+                  <td class="yes">כן</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ── Current state ────────────────────────────────────────── -->
+        <section id="status">
+          <p class="eyebrow">איפה אנחנו — אוגוסט 2026</p>
+          <h2>ה-backend בנוי. עכשיו מגדילים.</h2>
+          <p>
+            vicciz תכננה את Kiipling בארבעה שלבים: ניהול שיבושי טיסה, שירות B2B
+            בלייבל לבן, גישה ישירה לצרכן, ופלטפורמת הטיול המחובר המלאה. הקוד של
+            כל הארבעה כתוב, נבדק ורץ בפרודקשן.
+          </p>
+
+          <div class="grid">
+            <article class="panel">
+              <h3>מה כבר רץ</h3>
+              <p>
+                80 endpoints ו-26 מיגרציות של בסיס הנתונים בפרודקשן, על Google
+                Cloud Run. מנוע תלת-סוכני שבנוי על ה-ADK של גוגל עם Gemini 2.5
+                Flash, ולצידו סוכן שיחה שמסווג שמונה סוגי כוונות ומביא את ההקשר
+                לפי ההעדפות של הנוסע. 1,283 בדיקות אוטומטיות ב-114 קבצים, כולן
+                עוברות.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>מעבר לליבה</h3>
+              <p>
+                מנוע עבודה מול ספקים עם חמישה סוגי מתאמים; מנוע חיפוש על
+                רגולציית זכויות נוסעים עם pgvector; ניתוח מצב רוח עם הסלמה לפי
+                מגמה; תביעות ביטוח; קבוצות נוסעים; ורישום עסקים B2B כולל מיתוג
+                וחיוב.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>מה הלאה</h3>
+              <p>
+                ייצוב הפרודקשן, חיוב דרך Stripe, חיבור להזנות חיות של מזג אוויר,
+                תחבורה ומלונות, ערוץ קולי, והיעד המרכזי — שיעור פתרון אוטונומי
+                מדיד.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>הפיילוט הראשון</h3>
+              <p>
+                פריסה בלייבל לבן לסוכנויות קטנות שמוציאות טיולי קברי צדיקים:
+                ערוץ אחד — וואטסאפ, טלפון ואימייל — לטיסות, להסעות ולתיאום מול
+                המלונות, כשהנציג תמיד יכול לקחת את ההגה.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- ── Buyers ───────────────────────────────────────────────── -->
+        <section id="who-its-for">
+          <p class="eyebrow">מי הלקוחות</p>
+          <h2>קודם עסקים, אחר כך צרכנים</h2>
+          <div class="grid">
+            <article class="panel">
+              <h3>1 · עסקי תיירות <span class="tag">עדיפות</span></h3>
+              <p>
+                סוכנויות נסיעות מקוונות, סוכני נסיעות ומפעילי טיולים קונים את
+                Kiipling כשירות מנוהל ללקוחות שלהם. הם שולחים אלינו את נתוני
+                הטיול דרך API ומקבלים דשבורד למעקב אחרי הטיולים, דוחות הסלמה
+                ומדדי פתרון. הסוכן מדבר עם הלקוחות שלהם בשמם. נקודת הכניסה שלנו
+                היא מפעילים אירופיים בינוניים: הם מרגישים את עלות השיבושים חזק,
+                ואין להם דרך לבנות דבר כזה לבד.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>2 · נוסעים, דרך אפליקציית vicciz</h3>
+              <p>
+                נתוני הטיול עוברים אוטומטית מהאפליקציה לסוכן, בלי שצריך להוכיח
+                כלום, והסוכן עובד תחת המותג vicciz במסגרת מנוי.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>3 · נוסעים, ישירות</h3>
+              <p>
+                אפשר פשוט להעביר אישור הזמנה שהסוכן יקרא, או להקליד מספרי הזמנה
+                ידנית. מה שאפשר לאמת — מאומת; השאר עולה לבדיקה.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- ── Why now ──────────────────────────────────────────────── -->
+        <section id="why-now">
+          <p class="eyebrow">למה עכשיו</p>
+          <h2>עלות הטיפול האנושי בנוסע נחתכת בכל העולם</h2>
+          <p>
+            מוכרי הנסיעות הגדולים עברו בשנתיים האחרונות להחליף אנשי תמיכה
+            באוטומציה, והם מפרסמים כמה זה חוסך להם. זה יוצר תקציב לכל דבר שסוגר
+            מקרה בלי בן אדם, וגם חור בשירות בכל מקום שבו האוטומציה נעצרת — והיום
+            היא נעצרת בדיוק בגבול מה שהמוכר עצמו מכר.
+          </p>
+          <p>
+            הרגולציה רק מחדדת את זה. הפיצויים לנוסעים באירופה לפי EU261 מוערכים
+            בכ-6.5 מיליארד אירו בשנה, וכשני שלישים מהם פשוט לא נתבעים. סוכן
+            שכבר מכיר את הכללים יכול גם לתקן את הטיול וגם להגיש את התביעה באותה
+            נשימה — משהו שחברות התביעות לא עושות, וגם לא הכלים של חברות התעופה.
+          </p>
+        </section>
+
+        <!-- ── FAQ ──────────────────────────────────────────────────── -->
+        <section id="faq">
+          <p class="eyebrow">שאלות ותשובות</p>
+          <h2>שאלות נפוצות</h2>
+          <div class="faq">
+            <details>
+              <summary>מה זו vicciz?</summary>
+              <p>
+                vicciz היא חברת טכנולוגיה בתחום התיירות, שמפתחת את Kiipling —
+                סוכן AI לניהול טיולים אחרי ההזמנה. מה שהוא עושה בעיקר: כשטיסה
+                מתעכבת או מתבטלת, הוא מסדר מחדש את כל מה שנשבר בעקבותיה — מלון,
+                הסעה, טיול, פעילות.
+              </p>
+            </details>
+            <details>
+              <summary>מה ההבדל בין vicciz ל-Kiipling?</summary>
+              <p>
+                vicciz היא החברה, וגם המותג שהצרכן מכיר. Kiipling הוא סוכן
+                הטיול שהיא מפתחת — המוצר שעסקי תיירות רוכשים ומפעילים בלייבל
+                לבן.
+              </p>
+            </details>
+            <details>
+              <summary>במה זה שונה מכלי שמזמין טיסה מחדש?</summary>
+              <p>
+                כלים כאלה פותרים את הטיסה, וזהו. Kiipling מתחיל בדיוק איפה שהם
+                נעצרים: הוא מזהה את הצ׳ק-אין במלון, את איסוף ההסעה ואת הטיול
+                שהשעה החדשה שברה, ומטפל בכל אחד מהם מול הספק שלו — כולל הזמנות
+                שהנוסע עשה במקום אחר לגמרי.
+              </p>
+            </details>
+            <details>
+              <summary>הסוכן פועל בלי לשאול את הנוסע?</summary>
+              <p>
+                לא. שום פנייה לספק לא יוצאת בלי אישור אנושי מפורש. הסוכן מזהה,
+                מחליט ומנסח לבד — ואז עוצר ומחכה. זו החלטת תכנון משפטית, לא
+                מגבלה זמנית.
+              </p>
+            </details>
+            <details>
+              <summary>עסק תיירות צריך לעשות אינטגרציה?</summary>
+              <p>
+                העסק שולח את נתוני הטיול ל-API אחד ומקבל דשבורד. מול המלונות,
+                חברות ההסעה ומפעילי הטיולים עצמם לא צריך שום אינטגרציה —
+                Kiipling מגיע אליהם בוואטסאפ ובאימייל, איפה שממילא עונים לו.
+              </p>
+            </details>
+            <details>
+              <summary>כמה זה עולה?</summary>
+              <p>
+                משלמים לפי שיבוש שנפתר, בטווח יעד של 8 עד 15 דולר לטיול משובש,
+                מול פנייה לנציג שעולה בסביבות 25 דולר. לעסקים יש מנוי או הסכם
+                לפי מספר לקוחות, תלוי בנפח.
+              </p>
+            </details>
+            <details>
+              <summary>באילו ערוצים הסוכן עובד?</summary>
+              <p>
+                וואטסאפ ואימייל היום, וערוץ קולי בדרך. הוא עונה בשפה שהנוסע
+                מעדיף, ומכבד את מה ששמור עליו — ערוץ מועדף ושעות שנוח לו לקבל
+                פנייה.
+              </p>
+            </details>
+            <details>
+              <summary>איפה הנתונים נשמרים?</summary>
+              <p>
+                הכול באיחוד האירופי. שירותי האפליקציה רצים על Google Cloud Run
+                באזור <span class="ltr">europe-west3</span> (פרנקפורט), ובסיס
+                הנתונים ב-<span class="ltr">eu-central-1</span>.
+              </p>
+            </details>
+            <details>
+              <summary>Kiipling זמין היום?</summary>
+              <p>
+                ה-backend של כל ארבעת שלבי המוצר פרוס ורץ נכון לאוגוסט 2026,
+                והפיילוט הראשון בלייבל לבן כבר באוויר. אנחנו מדברים עכשיו עם
+                עסקי תיירות נוספים על פיילוטים.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <!-- ── Contact ──────────────────────────────────────────────── -->
+        <section id="contact">
+          <p class="eyebrow">הצעד הבא</p>
+          <h2>תראו אותו שובר טיול ומרכיב אותו מחדש</h2>
+          <p>
+            הדמו נמשך 64 שניות: עיכוב אחד בטיסה, שלוש הזמנות שנשברות ונבנות
+            מחדש, כל אחת באישור לפני שהיא יוצאת.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://demo.vicciz.com/"
+              >לצפייה בדמו</a
+            >
+            <a class="btn btn-secondary" href="mailto:hello@vicciz.com"
+              ><span class="ltr">hello@vicciz.com</span></a
+            >
+          </div>
+
+          <ul class="sources">
+            <li>
+              נתוני המוצר וההנדסה הם רישומים פנימיים של vicciz, נכון לאוגוסט
+              2026.
+            </li>
+            <li>
+              היקף הפיצויים לפי EU261 והחלק שלא נתבע: הערכות ענף של Skycop
+              ו-AeroTime, 2025.
+            </li>
+            <li>
+              עלות פנייה לנציג: מדדים מקובלים במיקור חוץ של שירות לקוחות
+              בתיירות.
+            </li>
+          </ul>
+        </section>
+      </main>
+
+      <footer>
+        <span>© 2026 vicciz</span>
+        <a href="https://demo.vicciz.com/">דמו המוצר</a>
+        <a href="/" hreflang="en" lang="en">English</a>
+        <span class="spacer"></span>
+        <span
+          >עודכן לאחרונה
+          <time datetime="2026-08-10">10 באוגוסט 2026</time></span
+        >
+      </footer>
+    </div>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://vicciz.com/#organization",
+            "name": "vicciz",
+            "alternateName": ["ויקיז", "Vicciz", "vicciz Kiipling"],
+            "url": "https://vicciz.com/",
+            "logo": "https://pitch.vicciz.com/vicciz-mark.svg",
+            "email": "hello@vicciz.com",
+            "description": "vicciz היא חברת טכנולוגיה בתחום התיירות שמפתחת את Kiipling, סוכן AI שמסדר מחדש כל הזמנה שנשברת בעקבות עיכוב או ביטול של טיסה. נמכר לסוכנויות נסיעות מקוונות, סוכני נסיעות ומפעילי טיולים כשירות ליווי נוסעים בלייבל לבן."
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://pitch.vicciz.com/he/#webpage",
+            "url": "https://pitch.vicciz.com/he/",
+            "name": "vicciz — סוכן ה-AI שמרכיב מחדש את הטיול כשהטיסה משתבשת",
+            "about": { "@id": "https://vicciz.com/#organization" },
+            "inLanguage": "he",
+            "datePublished": "2026-08-10",
+            "dateModified": "2026-08-10"
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://pitch.vicciz.com/he/#faq",
+            "inLanguage": "he",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "מה זו vicciz?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "vicciz היא חברת טכנולוגיה בתחום התיירות, שמפתחת את Kiipling — סוכן AI לניהול טיולים אחרי ההזמנה. כשטיסה מתעכבת או מתבטלת, הוא מסדר מחדש את כל מה שנשבר בעקבותיה: מלון, הסעה, טיול, פעילות."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "מה ההבדל בין vicciz ל-Kiipling?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "vicciz היא החברה, וגם המותג שהצרכן מכיר. Kiipling הוא סוכן הטיול שהיא מפתחת — המוצר שעסקי תיירות רוכשים ומפעילים בלייבל לבן."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "במה זה שונה מכלי שמזמין טיסה מחדש?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "כלים כאלה פותרים את הטיסה, וזהו. Kiipling מתחיל בדיוק איפה שהם נעצרים: הוא מזהה את הצ׳ק-אין במלון, את איסוף ההסעה ואת הטיול שהשעה החדשה שברה, ומטפל בכל אחד מהם מול הספק שלו — כולל הזמנות שהנוסע עשה במקום אחר לגמרי."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "הסוכן פועל בלי לשאול את הנוסע?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "לא. שום פנייה לספק לא יוצאת בלי אישור אנושי מפורש. הסוכן מזהה, מחליט ומנסח לבד, ואז עוצר ומחכה. זו החלטת תכנון משפטית, לא מגבלה זמנית."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "עסק תיירות צריך לעשות אינטגרציה?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "העסק שולח את נתוני הטיול ל-API אחד ומקבל דשבורד. מול המלונות, חברות ההסעה ומפעילי הטיולים עצמם לא צריך שום אינטגרציה — Kiipling מגיע אליהם בוואטסאפ ובאימייל."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "כמה זה עולה?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "משלמים לפי שיבוש שנפתר, בטווח יעד של 8 עד 15 דולר לטיול משובש, מול פנייה לנציג שעולה בסביבות 25 דולר. לעסקים יש מנוי או הסכם לפי מספר לקוחות, תלוי בנפח."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "איפה הנתונים נשמרים?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "הכול באיחוד האירופי. שירותי האפליקציה רצים על Google Cloud Run באזור europe-west3 (פרנקפורט), ובסיס הנתונים ב-eu-central-1."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Kiipling זמין היום?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "ה-backend של כל ארבעת שלבי המוצר פרוס ורץ נכון לאוגוסט 2026, והפיילוט הראשון בלייבל לבן כבר באוויר."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,76 @@
+# pitch.vicciz.com — public company pitch. Everything here is meant to be
+# indexed, quoted and cited, by search crawlers and by AI answer engines alike.
+
+User-agent: *
+Allow: /
+
+# AI answer engines and model crawlers, named explicitly. Several of these are
+# not covered by a wildcard rule in their own operators' documentation, so the
+# permission is stated rather than implied.
+
+# OpenAI — ChatGPT search, browsing, and training
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic — Claude search and browsing
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Google — Gemini and AI Overviews grounding
+User-agent: Google-Extended
+Allow: /
+
+# Microsoft Copilot
+User-agent: bingbot
+Allow: /
+
+# Common Crawl — the corpus behind many downstream models
+User-agent: CCBot
+Allow: /
+
+# Meta
+User-agent: meta-externalagent
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Amazon
+User-agent: Amazonbot
+Allow: /
+
+# Mistral
+User-agent: MistralAI-User
+Allow: /
+
+# You.com
+User-agent: YouBot
+Allow: /
+
+Sitemap: https://pitch.vicciz.com/sitemap.xml
