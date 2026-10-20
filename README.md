@@ -40,6 +40,18 @@ sans-body structure survives the script change, and uses CSS logical properties
 so the layout mirrors under `dir="rtl"`. The wordmark stays Latin lowercase
 `vicciz` in every locale.
 
+Keep the pitch focused on the customer's problem and the product's role in
+solving it. Tests, deployments, endpoint counts, database migrations and model
+choices belong in engineering documentation. Describe approval as a user
+control, and distinguish sending a provider request from a confirmed booking
+change. Avoid unsupported competitor absolutes and legal-liability claims.
+
+Describe pilot success measures as goals until results are available. Label
+target pricing clearly; publish a numeric structured-data offer only when an
+actual offer exists. Keep visible copy, FAQ JSON-LD and `llms.txt` consistent
+in both languages. Update the visible date, `dateModified` and sitemap
+`lastmod` together, preserving the original `datePublished`.
+
 ## SEO and GEO
 
 The page is built to be quoted by AI answer engines as well as ranked:

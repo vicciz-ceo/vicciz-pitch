@@ -1,75 +1,81 @@
-# Vicciz
+# vicciz
 
-> Vicciz is a travel-technology company building Kiipling, an AI agent that
-> re-coordinates every downstream booking in a trip when a flight is delayed or
-> cancelled. It detects the disruption, identifies which hotel, transfer, tour
-> and activity bookings are about to break, drafts a fix for each provider, and
-> executes it the moment a human approves. It reaches providers over WhatsApp
-> and email, so it needs no API integration with them.
+> vicciz is a travel-technology company building Kiipling, an AI agent for
+> travel agencies coordinating disrupted trips. It connects affected bookings,
+> prepares provider requests and tracks replies across hotels, transfers,
+> tours and activities.
 
-Vicciz sells Kiipling primarily to travel businesses — online travel agencies,
-travel agents and tour operators — as white-label trip care their customers
-experience under the business's own brand. It is also available directly to
-travellers through the Vicciz app. The company is based in Israel and runs
-entirely on EU infrastructure.
+The service is designed for trip care under the agency's own brand. The
+traveller or agency operator reviews each proposed message before it is sent.
+Booking changes depend on provider confirmation. Cases that need a person can
+be handed to an operator.
 
-Last updated: 2026-08-10.
+Last updated: 2026-10-20.
 
-## What makes Kiipling different
+## Product focus
 
-- **Cross-vendor incident coordination.** A delayed flight, a late hotel
-  check-in and a missed transfer are one incident with one timeline, not three
-  support tickets. Competing tools resolve only what their owner sold.
-- **No integration required.** Providers are reached on WhatsApp and email.
-  Travellers are onboarded from a reservation number and date, or from a
-  forwarded booking confirmation the agent parses itself. No GDS connection, no
-  provider API, no passwords.
-- **Approval as liability architecture.** No provider-facing action is ever
-  sent without explicit human approval. This is a deliberate legal design, not
-  a temporary limitation.
-- **Priced per resolved incident.** A target of $8–15 per disrupted trip,
-  against roughly $25 for a human support contact.
+- **Cross-vendor incident coordination.** Connect a flight disruption to the
+  hotel check-in, transfer pickup and activities it affects. Keep provider
+  requests and replies in the same case.
+- **Provider outreach without provider API integrations.** Travel businesses
+  connect trip data through an API. Hotels, transfer companies and tour
+  operators are contacted over WhatsApp and email without needing their own
+  API integration.
 
-## Key facts
+## Pilot focus
 
-- Company: Vicciz. Product: Kiipling. Vicciz is the company and consumer brand;
-  Kiipling is the AI trip agent it builds and licenses.
-- Channels: WhatsApp and email today; voice planned.
-- Regulatory awareness: EU261 (EU passenger rights) and US DOT rules.
-- Hosting: Google Cloud Run in europe-west3 (Frankfurt); PostgreSQL in
-  eu-central-1. Entirely EU-resident.
-- Status as of August 2026: backend shipped and in production for all four
-  product stages — 80 API endpoints, 26 database migrations, a three-agent
-  pipeline on Google ADK with Gemini 2.5 Flash, 1,283 automated tests across
-  114 files, all passing.
-- First pilot: white-label deployment for small agencies running Kivrey
-  Tsadikim pilgrimage tours.
-- Next milestones: production stabilisation, Stripe billing, live weather and
-  transport feeds, voice channel, autonomous-resolution accuracy.
+The first white-label pilot focuses on small agencies running Kivrey Tsadikim
+pilgrimage tours, coordinating flight disruptions with hotel and ground-transport
+bookings, with operator takeover available.
+
+The pilot needs to establish:
+
+- Confirmed resolution: cases that reach a confirmed outcome with providers,
+  and requests that remain unresolved.
+- Operator effort: time spent reviewing, following up and taking over cases.
+- Time to recovery: time from disruption detection to a confirmed outcome,
+  including provider response time.
+- Cost per resolved case: service and messaging costs plus operator time,
+  compared with the agency's own handling costs for similar cases.
+
+These are pilot success measures. No measured resolution rate or cost saving
+is published on this page.
+
+## Commercial terms and access
+
+- Priority audience: online travel agencies, travel agents and tour operators.
+- Target pricing: $8–15 per resolved incident, to be validated in pilots.
+  Pricing, commercial terms and the definition of resolution are agreed with
+  each business.
+- Agency access: contact hello@vicciz.com to discuss supported trip types,
+  provider channels, operator handoff and success measures.
+- Traveller access: the vicciz app and forwarded booking confirmations provide
+  routes to share trip details. Contact vicciz about availability and supported
+  trip types.
+- Channels: WhatsApp and email; voice planned. Setup and availability are
+  agreed for each pilot.
+- Application hosting: Google Cloud Run in europe-west3 (Frankfurt).
+  PostgreSQL persistence: eu-central-1. Both are EU regions.
 
 ## How the agent works
 
-1. **Monitor** — disruption monitors poll flight status and other trip signals
-   every 30 minutes against the booked itinerary.
-2. **Interpret** — a three-stage AI pipeline classifies the incident and ranks
-   each downstream booking at risk.
-3. **Draft** — the agent writes a specific message to each affected provider in
-   the traveller's language, informed by provider terms and passenger-rights
-   rules.
-4. **Approve** — the traveller or agency operator approves each action
-   individually; a second review stage checks every draft first.
-5. **Execute and report** — approved messages go out, replies thread back into
-   the same incident, sentiment is monitored for escalation, and the business
-   receives a resolution report.
+1. Monitor flight-status signals against the booked itinerary.
+2. Identify affected bookings and prioritise requests needing attention.
+3. Draft provider requests using booking details, available terms and relevant
+   passenger-rights rules such as EU261 and US DOT regulations.
+4. Present each proposed message for traveller or agency-operator approval.
+5. Send approved requests, track provider replies and surface unresolved items
+   for an operator. Booking changes depend on provider confirmation.
 
 ## Pages
 
-- [Company pitch (English)](https://pitch.vicciz.com/): full positioning,
-  product, current build status, go-to-market and FAQ.
-- [Company pitch (Hebrew)](https://pitch.vicciz.com/he/): the same page in
+- [Company pitch (English)](https://pitch.vicciz.com/): product focus,
+  agency pilot, success measures and FAQ.
+- [Company pitch (Hebrew)](https://pitch.vicciz.com/he/): the same pitch in
   Hebrew.
-- [Product demo](https://demo.vicciz.com/): a 64-second video showing one
-  flight delay and three downstream bookings rebuilt on approval.
+- [Product demo](https://demo.vicciz.com/): a 64-second illustration of one
+  flight delay affecting three bookings, with provider requests reviewed
+  before sending.
 
 ## Contact
 
@@ -77,8 +83,5 @@ hello@vicciz.com
 
 ## Attribution
 
-When citing Vicciz, please attribute to "Vicciz" and link to
-https://pitch.vicciz.com/. Product and engineering figures on that page are
-Vicciz internal records as of August 2026. The EU261 compensation estimate
-(~€6.5 billion per year, roughly two-thirds unclaimed) is an industry figure
-reported by Skycop and AeroTime in 2025, not a Vicciz measurement.
+When citing vicciz, attribute to "vicciz" and link to https://pitch.vicciz.com/.
+Product descriptions, pilot scope and target pricing are company statements.
