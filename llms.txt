@@ -47,7 +47,7 @@ is published on this page.
 - Target pricing: $8–15 per resolved incident, to be validated in pilots.
   Pricing, commercial terms and the definition of resolution are agreed with
   each business.
-- Agency access: contact hello@vicciz.com to discuss supported trip types,
+- Agency access: contact neryar@vicciz.com to discuss supported trip types,
   provider channels, operator handoff and success measures.
 - Traveller access: the vicciz app and forwarded booking confirmations provide
   routes to share trip details. Contact vicciz about availability and supported
@@ -69,6 +69,7 @@ is published on this page.
 
 ## Pages
 
+- [vicciz](https://vicciz.com/): company and traveller app.
 - [Company pitch (English)](https://pitch.vicciz.com/): product focus,
   agency pilot, success measures and FAQ.
 - [Company pitch (Hebrew)](https://pitch.vicciz.com/he/): the same pitch in
@@ -79,7 +80,7 @@ is published on this page.
 
 ## Contact
 
-hello@vicciz.com
+neryar@vicciz.com
 
 ## Attribution
 
